@@ -387,7 +387,9 @@ MonoBehaviour:
   maxRobots: 5
   basicRobotPrefab: {fileID: 1684956755711734513, guid: 5624d12e0daf74e4db6976a996eec6eb,
     type: 3}
-  actualRobots: 0
+  bonusRobotPrefab: {fileID: 2488937067837162281, guid: 75558cc95e654a24791478d71173a92d,
+    type: 3}
+  bonusRobotSpawnRate: 10
 --- !u!1 &1774549012
 GameObject:
   m_ObjectHideFlags: 0

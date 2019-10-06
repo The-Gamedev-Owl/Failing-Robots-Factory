@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BasicRobot : MonoBehaviour
+public class BonusRobot : MonoBehaviour
 {
     public RobotAI.AIRobot ai;
 
@@ -10,13 +10,13 @@ public class BasicRobot : MonoBehaviour
 
     private void Start()
     {
-        moveSpeed = FindObjectOfType<GameParameters>().GetMoveSpeed();
+        moveSpeed = FindObjectOfType<GameParameters>().GetMoveSpeed() * 1.5f;
+        RotateDependingOnAI();
     }
 
     private void Update()
     {
-        if (ai != RobotAI.AIRobot.STILL)
-            Move();
+        Move();
     }
 
     private void Move()
@@ -32,4 +32,16 @@ public class BasicRobot : MonoBehaviour
     {
         Destroy(gameObject);
     }
+
+    private void RotateDependingOnAI()
+    {
+        Vector3 newRotation = transform.eulerAngles;
+
+        if (ai == RobotAI.AIRobot.MOVE_LEFT)
+            newRotation.z = 90f;
+        if (ai == RobotAI.AIRobot.MOVE_RIGHT)
+            newRotation.z = 270f;
+        transform.eulerAngles = newRotation;
+    }
 }
+
