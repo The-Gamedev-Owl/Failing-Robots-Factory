@@ -10,10 +10,14 @@ public class SpawnRobots : MonoBehaviour
     /* Bonus Robots */
     public GameObject bonusRobotPrefab;
     public float bonusRobotSpawnRate;
+    /* Time Slow Robots */
+    public GameObject timeslowRobotPrefab;
+    public float timeslowRobotSpawnRate;
 
     private void Start()
     {
-        InvokeRepeating("SpawnBonusRobot", 1, bonusRobotSpawnRate);
+        StartCoroutine(SpawnSpecialRobots(bonusRobotSpawnRate, bonusRobotPrefab));
+        StartCoroutine(SpawnSpecialRobots(timeslowRobotSpawnRate, timeslowRobotPrefab));
     }
 
     void Update()
@@ -24,24 +28,26 @@ public class SpawnRobots : MonoBehaviour
        }
     }
 
-    private void SpawnBonusRobot()
+    #region RobotCreation
+    private IEnumerator SpawnSpecialRobots(float spawnRate, GameObject robotPrefab)
     {
         float xSpawn;
         float ySpawn;
         RobotAI.AIRobot ai;
 
-        if (Time.time >= bonusRobotSpawnRate)
+        while (gameObject != null)
         {
+            yield return new WaitForSeconds(spawnRate);
             ySpawn = GenerateYSpawn();
             if (Random.Range(0, 2) == 0)
                 ai = RobotAI.AIRobot.MOVE_LEFT;
             else
                 ai = RobotAI.AIRobot.MOVE_RIGHT;
-            xSpawn = GenerateXSpawnMoving(ai, ySpawn, bonusRobotPrefab, false);
-            CreateBonusRobot(xSpawn, ySpawn, ai);
+            xSpawn = GenerateXSpawnMoving(ai, ySpawn, robotPrefab, false);
+            CreateRobot(xSpawn, ySpawn, ai, robotPrefab);
         }
     }
-    
+
     private void SpawnBasicRobot(int rand)
     {
         float ySpawn = GenerateYSpawn();
@@ -56,37 +62,28 @@ public class SpawnRobots : MonoBehaviour
                 movementType = RobotAI.AIRobot.MOVE_RIGHT;
             xSpawn = GenerateXSpawnMoving(movementType, ySpawn, basicRobotPrefab);
             if (!float.IsNaN(xSpawn))
-                CreateBasicRobot(movementType, xSpawn, ySpawn);
+                CreateRobot(xSpawn, ySpawn, movementType, basicRobotPrefab);
         }
         else
         {
             xSpawn = GenerateXSpawnStill(ySpawn);
             if (!float.IsNaN(xSpawn))
-                CreateBasicRobot(RobotAI.AIRobot.STILL, xSpawn, ySpawn);
+                CreateRobot(xSpawn, ySpawn, RobotAI.AIRobot.STILL, basicRobotPrefab);
         }
     }
 
-    public void CreateBonusRobot(float xSpawn, float ySpawn, RobotAI.AIRobot ai)
+    public void CreateRobot(float xSpawn, float ySpawn, RobotAI.AIRobot ai, GameObject robotPrefab)
     {
-        GameObject newGo = Instantiate(bonusRobotPrefab) as GameObject;
-        BonusRobot newRobot = newGo.GetComponent<BonusRobot>();
+        GameObject newGo = Instantiate(robotPrefab) as GameObject;
+        ARobot newRobot = newGo.GetComponent<ARobot>();
 
         newRobot.transform.position = new Vector3(xSpawn, ySpawn, newRobot.transform.position.z);
         newRobot.transform.parent = transform;
         newRobot.ai = ai;
     }
+    #endregion RobotCreation
 
-    public BasicRobot CreateBasicRobot(RobotAI.AIRobot ai, float xSpawn, float ySpawn)
-    {
-        GameObject newGo = Instantiate(basicRobotPrefab) as GameObject;
-        BasicRobot newRobot = newGo.GetComponent<BasicRobot>();
-
-        newRobot.transform.position = new Vector3(xSpawn, ySpawn, newRobot.transform.position.z);
-        newRobot.transform.parent = transform;
-        newRobot.ai = ai;
-        return newRobot;
-    }
-
+    #region GenerateSpawnPosition
     /* Generates a random X position on borders of the screen*/
     private float GenerateXSpawnMoving(RobotAI.AIRobot movementType, float ySpawn, GameObject prefab, bool checkOnOther = true)
     {
@@ -152,4 +149,5 @@ public class SpawnRobots : MonoBehaviour
         }
         return false;
     }
+    #endregion GenerateSpawnPosition
 }
