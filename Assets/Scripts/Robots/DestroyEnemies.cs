@@ -19,10 +19,7 @@ public class DestroyEnemies : MonoBehaviour
         {
             hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(actualTouch.position), Vector2.zero);
             if (hit.transform != null)
-            {
                 hit.transform.gameObject.GetComponent<ARobot>().DieAbility();
-                Destroy(hit.transform.gameObject);
-            }
         }
     }
 }

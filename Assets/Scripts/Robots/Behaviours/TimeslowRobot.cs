@@ -36,6 +36,7 @@ public class TimeslowRobot : ARobot
         ManageScore.actualScore += 1;
         gameParameters.ChangeSpeed(gameParameters.GetMoveSpeed() / 3);
         gameParameters.ResetSpeed(slowTimeDuration); // Changes speed back to normal afer 'slowTimeDuration'
+        SelfDestruct();
     }
 }
 

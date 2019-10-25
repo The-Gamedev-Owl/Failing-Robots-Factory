@@ -38,4 +38,9 @@ abstract public class ARobot : MonoBehaviour
     }
 
     abstract public void DieAbility();
+
+    protected void SelfDestruct()
+    {
+        Destroy(gameObject);
+    }
 }

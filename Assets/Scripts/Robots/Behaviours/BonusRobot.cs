@@ -32,6 +32,7 @@ public class BonusRobot : ARobot
     public override void DieAbility()
     {
         ManageScore.actualScore += 20;
+        SelfDestruct();
     }
 }
 
