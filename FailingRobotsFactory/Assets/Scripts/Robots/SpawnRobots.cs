@@ -5,75 +5,103 @@ using UnityEngine;
 public class SpawnRobots : MonoBehaviour
 {
     public int maxRobots;
+    /* Basic Robots */
     public GameObject basicRobotPrefab;
+    /* Bonus Robots */
+    public GameObject bonusRobotPrefab;
+    public float bonusRobotSpawnRate;
+    /* Time Slow Robots */
+    public GameObject timeslowRobotPrefab;
+    public float timeslowRobotSpawnRate;
+
+    private void Start()
+    {
+        StartCoroutine(SpawnSpecialRobots(bonusRobotSpawnRate, bonusRobotPrefab));
+        StartCoroutine(SpawnSpecialRobots(timeslowRobotSpawnRate, timeslowRobotPrefab));
+    }
 
     void Update()
     {
        if (gameObject.transform.childCount < maxRobots)
        {
-           SpawnRobot(); //// Argument with random between 1 -> 3
+            SpawnBasicRobot(Random.Range(0, 100));
        }
     }
 
-    private void SpawnRobot()
+    #region RobotCreation
+    private IEnumerator SpawnSpecialRobots(float spawnRate, GameObject robotPrefab)
     {
-        //// Later check on how many random got
-        SpawnBasicRobot(Random.Range(0, 100));
+        float xSpawn;
+        float ySpawn;
+        RobotAI.AIRobot ai;
+
+        while (gameObject != null)
+        {
+            yield return new WaitForSeconds(spawnRate);
+            ySpawn = GenerateYSpawn();
+            if (Random.Range(0, 2) == 0)
+                ai = RobotAI.AIRobot.MOVE_LEFT;
+            else
+                ai = RobotAI.AIRobot.MOVE_RIGHT;
+            xSpawn = GenerateXSpawnMoving(ai, ySpawn, robotPrefab, false);
+            CreateRobot(xSpawn, ySpawn, ai, robotPrefab);
+        }
     }
-    
+
     private void SpawnBasicRobot(int rand)
     {
         float ySpawn = GenerateYSpawn();
         float xSpawn;
-        BasicRobot.AIBasicRobot movementType;
+        RobotAI.AIRobot movementType;
 
         if (rand < 90) // 90% chance to create a moving robot
         {
             if (Random.Range(0, 2) == 0)
-                movementType = BasicRobot.AIBasicRobot.MOVE_LEFT;
+                movementType = RobotAI.AIRobot.MOVE_LEFT;
             else
-                movementType = BasicRobot.AIBasicRobot.MOVE_RIGHT;
-            xSpawn = GenerateXSpawnMoving(movementType, ySpawn);
+                movementType = RobotAI.AIRobot.MOVE_RIGHT;
+            xSpawn = GenerateXSpawnMoving(movementType, ySpawn, basicRobotPrefab);
             if (!float.IsNaN(xSpawn))
-                CreateBasicRobot(movementType, xSpawn, ySpawn);
+                CreateRobot(xSpawn, ySpawn, movementType, basicRobotPrefab);
         }
         else
         {
             xSpawn = GenerateXSpawnStill(ySpawn);
             if (!float.IsNaN(xSpawn))
-                CreateBasicRobot(BasicRobot.AIBasicRobot.STILL, xSpawn, ySpawn);
+                CreateRobot(xSpawn, ySpawn, RobotAI.AIRobot.STILL, basicRobotPrefab);
         }
     }
 
-    public BasicRobot CreateBasicRobot(BasicRobot.AIBasicRobot ai, float xSpawn, float ySpawn)
+    public void CreateRobot(float xSpawn, float ySpawn, RobotAI.AIRobot ai, GameObject robotPrefab)
     {
-        GameObject newGo = Instantiate(basicRobotPrefab) as GameObject;
-        BasicRobot newRobot = newGo.GetComponent<BasicRobot>();
+        GameObject newGo = Instantiate(robotPrefab) as GameObject;
+        ARobot newRobot = newGo.GetComponent<ARobot>();
 
         newRobot.transform.position = new Vector3(xSpawn, ySpawn, newRobot.transform.position.z);
         newRobot.transform.parent = transform;
-        newRobot.AIRobot = ai;
-        return newRobot;
+        newRobot.ai = ai;
     }
+    #endregion RobotCreation
 
+    #region GenerateSpawnPosition
     /* Generates a random X position on borders of the screen*/
-    private float GenerateXSpawnMoving(BasicRobot.AIBasicRobot movementType, float ySpawn)
+    private float GenerateXSpawnMoving(RobotAI.AIRobot movementType, float ySpawn, GameObject prefab, bool checkOnOther = true)
     {
         Camera camera = Camera.main;
         float halfHeight = camera.orthographicSize;
         float halfWidth = camera.aspect * halfHeight;
-        float leftSide = -halfWidth - (basicRobotPrefab.transform.localScale.x * 10); // Multplying by 10 allows the robot not to be too close to screen borders
-        float rightSide = halfWidth + (basicRobotPrefab.transform.localScale.x * 10);
+        float leftSide = -halfWidth - (prefab.transform.localScale.x * 10); // Multplying by 10 allows the robot not to be too close to screen borders
+        float rightSide = halfWidth + (prefab.transform.localScale.x * 10);
 
-        if (movementType == BasicRobot.AIBasicRobot.MOVE_LEFT)
+        if (movementType == RobotAI.AIRobot.MOVE_LEFT)
         {
-            if (CheckSpawnOnOther(rightSide, ySpawn) == true)
+            if (checkOnOther && CheckSpawnOnOther(rightSide, ySpawn) == true)
                 return float.NaN;
             return rightSide;
         }
         else
         {
-            if (CheckSpawnOnOther(leftSide, ySpawn) == true)
+            if (checkOnOther && CheckSpawnOnOther(leftSide, ySpawn) == true)
                 return float.NaN;
             return leftSide;
         }
@@ -121,4 +149,5 @@ public class SpawnRobots : MonoBehaviour
         }
         return false;
     }
+    #endregion GenerateSpawnPosition
 }

@@ -12,8 +12,9 @@ GameObject:
   - component: {fileID: 1684956755711734518}
   - component: {fileID: 1684956755711734516}
   - component: {fileID: 2573993323536523103}
+  - component: {fileID: 5410540868354689483}
   m_Layer: 0
-  m_Name: BasicTestRobot
+  m_Name: BasicRobot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58,6 +59,7 @@ SpriteRenderer:
   m_ProbeAnchor: {fileID: 0}
   m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
   m_PreserveUVs: 0
   m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
@@ -116,7 +118,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 1684956755711734513}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277e0582c722f0d43a81b149edbf2556, type: 3}
+  m_Script: {fileID: 11500000, guid: 5882f60e59e161a4483900b5675a6501, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AIRobot: 0
+  ai: 0
+--- !u!95 &5410540868354689483
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1684956755711734513}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 71e6462106c037745ac3e0dc90d85812, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
