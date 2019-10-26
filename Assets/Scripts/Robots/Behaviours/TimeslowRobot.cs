@@ -7,19 +7,25 @@ public class TimeslowRobot : ARobot
     public float slowTimeDuration;
 
     private Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private CircleCollider2D circleCollider;
 
     // Overrides
     private void Start()
     {
+        isDying = false;
         gameParameters = FindObjectOfType<GameParameters>();
         animator = GetComponent<Animator>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        circleCollider = GetComponent<CircleCollider2D>();
         AnimationSpeedDependingOnDirection();
     }
 
     // Overrides
     private void FixedUpdate()
     {
-        moveSpeed = gameParameters.GetMoveSpeed() * 2f;
+        if (!isDying)
+            moveSpeed = gameParameters.GetMoveSpeed() * 2f;
         Move();
     }
 
@@ -36,6 +42,20 @@ public class TimeslowRobot : ARobot
         ManageScore.actualScore += 1;
         gameParameters.ChangeSpeed(gameParameters.GetMoveSpeed() / 3);
         gameParameters.ResetSpeed(slowTimeDuration); // Changes speed back to normal afer 'slowTimeDuration'
+        DeathAnimation();
+    }
+
+    protected override void DeathAnimation()
+    {
+        isDying = true;
+        moveSpeed /= 5; // Looks like the robot falls along. Not stopping right on touch
+        circleCollider.enabled = false;
+        spriteRenderer.enabled = false;
+        UnshowParts();
+        if (ai == RobotAI.AIRobot.MOVE_LEFT)
+            animator.SetTrigger("DeathLeft");
+        else if (ai == RobotAI.AIRobot.MOVE_RIGHT)
+            animator.SetTrigger("DeathRight");
     }
 }
 
