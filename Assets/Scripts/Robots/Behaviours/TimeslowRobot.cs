@@ -6,6 +6,7 @@ public class TimeslowRobot : ARobot
 {
     public float slowTimeDuration;
 
+    private bool hasBeenOnScreen;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
@@ -14,6 +15,7 @@ public class TimeslowRobot : ARobot
     private void Start()
     {
         isDying = false;
+        hasBeenOnScreen = false;
         gameParameters = FindObjectOfType<GameParameters>();
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -25,8 +27,20 @@ public class TimeslowRobot : ARobot
     private void FixedUpdate()
     {
         if (!isDying)
+        {
+            CheckInSight();
             moveSpeed = gameParameters.GetMoveSpeed() * 2f;
+        }
         Move();
+    }
+
+    private void CheckInSight()
+    {
+        if (!hasBeenOnScreen && spriteRenderer.isVisible)
+            hasBeenOnScreen = true;
+        Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if (hasBeenOnScreen && (screenPosition.x < (-Screen.width + 300) || screenPosition.x > (Screen.width + 300)))
+            Destroy(gameObject);
     }
 
     private void AnimationSpeedDependingOnDirection()

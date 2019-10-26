@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DestroyEnemies : MonoBehaviour
 {
+    public Sight playerSight;
+
     private void Update()
     {
         if (Input.touchCount > 0)
@@ -18,6 +20,7 @@ public class DestroyEnemies : MonoBehaviour
         if (actualTouch.phase == TouchPhase.Began)
         {
             hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(actualTouch.position), Vector2.zero);
+            playerSight.ResetFade();
             if (hit.transform != null)
                 hit.transform.gameObject.GetComponent<ARobot>().DieAbility();
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BasicRobot : ARobot
 {
+    private bool hasBeenOnScreen;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
@@ -12,6 +13,7 @@ public class BasicRobot : ARobot
     private void Start()
     {
         isDying = false;
+        hasBeenOnScreen = false;
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
@@ -25,15 +27,18 @@ public class BasicRobot : ARobot
             moveSpeed = gameParameters.GetMoveSpeed();
         if (ai != RobotAI.AIRobot.STILL)
         {
+            CheckInSight();
             animator.SetBool("IsMoving", true);
             Move();
         }
     }
 
-    // Overrides
-    private void OnBecameInvisible()
+    private void CheckInSight()
     {
-        if (!isDying)
+        if (!hasBeenOnScreen && spriteRenderer.isVisible)
+            hasBeenOnScreen = true;
+        Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if (hasBeenOnScreen && (screenPosition.x < (-Screen.width + 300) || screenPosition.x > (Screen.width + 300)))
             Destroy(gameObject);
     }
 

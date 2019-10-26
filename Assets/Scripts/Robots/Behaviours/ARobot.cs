@@ -11,30 +11,6 @@ abstract public class ARobot : MonoBehaviour
     protected float moveSpeed;
     protected GameParameters gameParameters;
 
-    #region MonoBehaviourMethods
-    private void Start()
-    {
-        isDying = false;
-        gameParameters = FindObjectOfType<GameParameters>();
-    }
-
-    private void FixedUpdate()
-    {
-        if (!isDying)
-        {
-            moveSpeed = gameParameters.GetMoveSpeed();
-            Move();
-        }
-    }
-
-    private void OnBecameInvisible()
-    {
-        if (!isDying)
-            Destroy(gameObject);
-    }
-
-    #endregion MonoBehaviourMethods
-
     protected void Move()
     {
         int multiplicator = ai == RobotAI.AIRobot.MOVE_LEFT ? -1 : 1; // Assign 1 if going to right, -1 if going to left
@@ -59,7 +35,7 @@ abstract public class ARobot : MonoBehaviour
         deathSprites.transform.Find("Explosion").gameObject.SetActive(true);
     }
 
-    protected void SelfDestruct()
+    public void SelfDestruct()
     {
         Destroy(gameObject);
     }
