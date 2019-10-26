@@ -6,9 +6,8 @@ public class BasicRobot : ARobot
 {
     public GameObject deathSprites;
 
-    private bool isDying;
     private Animator animator;
-    private Renderer spriteRenderer;
+    private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
 
     // Overrides "Start" MonoBehaviour method from ARobot
@@ -16,7 +15,7 @@ public class BasicRobot : ARobot
     {
         isDying = false;
         animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<Renderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         gameParameters = FindObjectOfType<GameParameters>();
     }
@@ -43,6 +42,11 @@ public class BasicRobot : ARobot
     public override void DieAbility()
     {
         ManageScore.actualScore += 1;
+        DeathAnimation();
+    }
+
+    protected override void DeathAnimation()
+    {
         isDying = true;
         moveSpeed /= 3; // Looks like the robot falls along. Not stopping right on touch
         boxCollider.enabled = false;

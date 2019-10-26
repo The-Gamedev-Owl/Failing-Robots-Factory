@@ -6,24 +6,30 @@ abstract public class ARobot : MonoBehaviour
 {
     public RobotAI.AIRobot ai;
 
-    protected GameParameters gameParameters;
+    protected bool isDying;
     protected float moveSpeed;
+    protected GameParameters gameParameters;
 
     #region MonoBehaviourMethods
     private void Start()
     {
+        isDying = false;
         gameParameters = FindObjectOfType<GameParameters>();
     }
 
     private void FixedUpdate()
     {
-        moveSpeed = gameParameters.GetMoveSpeed();
-        Move();
+        if (!isDying)
+        {
+            moveSpeed = gameParameters.GetMoveSpeed();
+            Move();
+        }
     }
 
     private void OnBecameInvisible()
     {
-        Destroy(gameObject);
+        if (!isDying)
+            Destroy(gameObject);
     }
 
     #endregion MonoBehaviourMethods
@@ -38,6 +44,7 @@ abstract public class ARobot : MonoBehaviour
     }
 
     abstract public void DieAbility();
+    abstract protected void DeathAnimation();
 
     protected void SelfDestruct()
     {

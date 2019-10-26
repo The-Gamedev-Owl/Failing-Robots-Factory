@@ -11,6 +11,7 @@ public class TimeslowRobot : ARobot
     // Overrides
     private void Start()
     {
+        isDying = false;
         gameParameters = FindObjectOfType<GameParameters>();
         animator = GetComponent<Animator>();
         AnimationSpeedDependingOnDirection();
@@ -19,8 +20,11 @@ public class TimeslowRobot : ARobot
     // Overrides
     private void FixedUpdate()
     {
-        moveSpeed = gameParameters.GetMoveSpeed() * 2f;
-        Move();
+        if (!isDying)
+        {
+            moveSpeed = gameParameters.GetMoveSpeed() * 2f;
+            Move();
+        }
     }
 
     private void AnimationSpeedDependingOnDirection()
@@ -36,7 +40,12 @@ public class TimeslowRobot : ARobot
         ManageScore.actualScore += 1;
         gameParameters.ChangeSpeed(gameParameters.GetMoveSpeed() / 3);
         gameParameters.ResetSpeed(slowTimeDuration); // Changes speed back to normal afer 'slowTimeDuration'
-        SelfDestruct();
+        DeathAnimation();
+    }
+
+    protected override void DeathAnimation()
+    {
+
     }
 }
 
