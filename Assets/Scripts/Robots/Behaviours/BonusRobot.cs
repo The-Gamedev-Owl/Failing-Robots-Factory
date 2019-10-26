@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BonusRobot : ARobot
 {
-    public GameObject deathSprites;
-
     private int framesAlive;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -58,7 +56,7 @@ public class BonusRobot : ARobot
         moveSpeed /= 3; // Looks like the robot falls along. Not stopping right on touch
         boxCollider.enabled = false;
         spriteRenderer.enabled = false;
-        deathSprites.SetActive(true);
+        UnshowParts();
         if (ai == RobotAI.AIRobot.MOVE_LEFT)
             animator.SetTrigger("DeathLeft");
         else if (ai == RobotAI.AIRobot.MOVE_RIGHT)

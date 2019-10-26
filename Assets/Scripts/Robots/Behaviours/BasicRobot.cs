@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BasicRobot : ARobot
 {
-    public GameObject deathSprites;
-
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
@@ -51,7 +49,7 @@ public class BasicRobot : ARobot
         moveSpeed /= 3; // Looks like the robot falls along. Not stopping right on touch
         boxCollider.enabled = false;
         spriteRenderer.enabled = false;
-        deathSprites.SetActive(true);
+        UnshowParts();
         animator.SetTrigger("DeathTrigger");
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine;
 public class TimeslowRobot : ARobot
 {
     public float slowTimeDuration;
-    public GameObject deathSprites;
 
     private Animator animator;
     private SpriteRenderer spriteRenderer;
@@ -52,7 +51,7 @@ public class TimeslowRobot : ARobot
         moveSpeed /= 5; // Looks like the robot falls along. Not stopping right on touch
         circleCollider.enabled = false;
         spriteRenderer.enabled = false;
-        deathSprites.SetActive(true);
+        UnshowParts();
         if (ai == RobotAI.AIRobot.MOVE_LEFT)
             animator.SetTrigger("DeathLeft");
         else if (ai == RobotAI.AIRobot.MOVE_RIGHT)
