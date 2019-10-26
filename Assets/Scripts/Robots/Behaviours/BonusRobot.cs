@@ -51,7 +51,7 @@ public class BonusRobot : ARobot
 
     public override void DieAbility()
     {
-        ManageScore.actualScore += 20;
+        ManageScore.AddScore(20);
         DeathAnimation();
     }
 

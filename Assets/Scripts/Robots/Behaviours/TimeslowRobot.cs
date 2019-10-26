@@ -53,7 +53,7 @@ public class TimeslowRobot : ARobot
 
     public override void DieAbility()
     {
-        ManageScore.actualScore += 1;
+        ManageScore.AddScore(1);
         gameParameters.ChangeSpeed(gameParameters.GetMoveSpeed() / 3);
         gameParameters.ResetSpeed(slowTimeDuration); // Changes speed back to normal afer 'slowTimeDuration'
         DeathAnimation();

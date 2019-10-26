@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class DestroyEnemies : MonoBehaviour
 {
-    public Sight playerSight;
+    private Sight playerSight;
+
+    private void Start()
+    {
+        playerSight = GetComponent<Sight>();
+    }
 
     private void Update()
     {

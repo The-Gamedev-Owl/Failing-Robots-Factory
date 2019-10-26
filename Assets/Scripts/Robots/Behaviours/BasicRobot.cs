@@ -44,7 +44,7 @@ public class BasicRobot : ARobot
 
     public override void DieAbility()
     {
-        ManageScore.actualScore += 1;
+        ManageScore.AddScore(1);
         DeathAnimation();
     }
 
