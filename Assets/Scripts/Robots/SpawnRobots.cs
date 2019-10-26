@@ -26,15 +26,9 @@ public class SpawnRobots : MonoBehaviour
     public void ScoreUpdated(int actualScore)
     {
         if (actualScore % bonusRobotSpawnRate == 0) // If actual score is a multiplier of 'bonusSpawnRate'
-        {
-            print("Spawning bonus");
             SpawnSpecialRobots(bonusRobotPrefab);
-        }
         if (actualScore % timeslowRobotSpawnRate == 0) // If actual score is a multiplier of 'timeslowSpawnRate'
-        {
-            print("Spawning timeslow");
             SpawnSpecialRobots(timeslowRobotPrefab);
-        }
     }
 
     private void SpawnSpecialRobots(GameObject robotPrefab)

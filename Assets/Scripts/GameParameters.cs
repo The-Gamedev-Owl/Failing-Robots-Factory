@@ -4,17 +4,31 @@ using UnityEngine;
 
 public class GameParameters : MonoBehaviour
 {
+    public int increaseDifficultyScoreStep;
+    public float difficultyMultiplier;
     public float ySpawn1 = 7.685f;
     public float ySpawn2 = 0.429f;
     public float ySpawn3 = -6.946f;
 
+    private float scoreSinceLastIncrease;
     private float initialSpeed;
     private float moveSpeed;
 
     private void Start()
     {
+        scoreSinceLastIncrease = 0;
         moveSpeed = 15f;
         initialSpeed = moveSpeed;
+    }
+
+    public void ScoreUpdated(int addedScore)
+    {
+        scoreSinceLastIncrease += addedScore;
+        if (scoreSinceLastIncrease >= increaseDifficultyScoreStep) // Every 'increaseDifficultyScoreStep', moveSpeed will increase
+        {
+            ChangeSpeed(moveSpeed + difficultyMultiplier);
+            scoreSinceLastIncrease = 0;
+        }
     }
 
     public float GetMoveSpeed()

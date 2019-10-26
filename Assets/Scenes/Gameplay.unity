@@ -426,6 +426,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 891780ea034a64648b2c678a3a82be19, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  increaseDifficultyScoreStep: 25
+  difficultyMultiplier: 3
   ySpawn1: 7.685
   ySpawn2: 0.429
   ySpawn3: -6.946

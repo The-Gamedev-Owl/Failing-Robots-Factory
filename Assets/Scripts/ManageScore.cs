@@ -6,12 +6,14 @@ public class ManageScore : MonoBehaviour
 {
     static public int actualScore;
 
+    static private GameParameters gameParameters;
     static private SpawnRobots spawner;
 
     private void Start()
     {
         actualScore = 0;
         spawner = GetComponent<SpawnRobots>();
+        gameParameters = FindObjectOfType<GameParameters>();
     }
 
     static public int GetActualScore()
@@ -23,5 +25,6 @@ public class ManageScore : MonoBehaviour
     {
         actualScore += toAdd;
         spawner.ScoreUpdated(actualScore);
+        gameParameters.ScoreUpdated(toAdd);
     }
 }

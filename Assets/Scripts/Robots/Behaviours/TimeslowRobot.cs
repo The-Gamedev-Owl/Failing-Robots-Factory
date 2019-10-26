@@ -29,7 +29,7 @@ public class TimeslowRobot : ARobot
         if (!isDying)
         {
             CheckInSight();
-            moveSpeed = gameParameters.GetMoveSpeed() * 2f;
+            moveSpeed = gameParameters.GetMoveSpeed() * 1.5f;
         }
         Move();
     }
