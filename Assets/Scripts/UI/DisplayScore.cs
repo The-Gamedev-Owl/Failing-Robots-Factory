@@ -14,6 +14,6 @@ public class DisplayScore : MonoBehaviour
 
     private void OnGUI()
     {
-        scoreText.text = ManageScore.actualScore.ToString();
+        scoreText.text = ManageScore.GetActualScore().ToString();
     }
 }
