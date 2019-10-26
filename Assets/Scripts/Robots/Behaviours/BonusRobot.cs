@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BonusRobot : ARobot
 {
-    private int framesAlive;
+    private bool hasBeenOnScreen;
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
@@ -13,7 +13,7 @@ public class BonusRobot : ARobot
     private void Start()
     {
         isDying = false;
-        framesAlive = 0;
+        hasBeenOnScreen = false;
         animator = GetComponent<Animator>();
         gameParameters = FindObjectOfType<GameParameters>();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -25,14 +25,19 @@ public class BonusRobot : ARobot
     private void FixedUpdate()
     {
         if (!isDying)
+        {
+            CheckInSight();
             moveSpeed = gameParameters.GetMoveSpeed() * 1.5f;
+        }
         Move();
-        framesAlive += 1;
     }
 
-    private void OnBecameInvisible()
+    private void CheckInSight()
     {
-        if (!isDying && framesAlive > 15) // Prevent from being destroyed when spawned
+        if (!hasBeenOnScreen && spriteRenderer.isVisible)
+            hasBeenOnScreen = true;
+        Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if (hasBeenOnScreen && (screenPosition.x < (-Screen.width + 300) || screenPosition.x > (Screen.width + 300)))
             Destroy(gameObject);
     }
 
