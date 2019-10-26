@@ -489,10 +489,10 @@ MonoBehaviour:
     type: 3}
   bonusRobotPrefab: {fileID: 2488937067837162281, guid: 75558cc95e654a24791478d71173a92d,
     type: 3}
-  bonusRobotSpawnRate: 1
+  bonusRobotSpawnRate: 10
   timeslowRobotPrefab: {fileID: 5031871502201813396, guid: d5bcb9d6b2654b0409a26bacadf4e14d,
     type: 3}
-  timeslowRobotSpawnRate: 15
+  timeslowRobotSpawnRate: 1
 --- !u!1 &795640130
 GameObject:
   m_ObjectHideFlags: 0

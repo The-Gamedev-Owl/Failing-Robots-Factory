@@ -60,9 +60,9 @@ public class BonusRobot : ARobot
         spriteRenderer.enabled = false;
         deathSprites.SetActive(true);
         if (ai == RobotAI.AIRobot.MOVE_LEFT)
-            animator.SetBool("DeathLeft", true);
+            animator.SetTrigger("DeathLeft");
         else if (ai == RobotAI.AIRobot.MOVE_RIGHT)
-            animator.SetBool("DeathRight", true);
+            animator.SetTrigger("DeathRight");
     }
 }
 
