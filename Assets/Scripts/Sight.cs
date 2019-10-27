@@ -18,6 +18,14 @@ public class Sight : MonoBehaviour
         ResetFade();
     }
 
+    public void StopFade()
+    {
+        mapFadeOutMat.color = Color.white;
+        robotsFadeOutMat.color = Color.white;
+        if (fadeOutCoroutine != null)
+            StopCoroutine(fadeOutCoroutine);
+    }
+
     public void ResetFade()
     {
         mapFadeOutMat.color = Color.white;
