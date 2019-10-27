@@ -9,16 +9,10 @@ public class SpawnRobots : MonoBehaviour
     public GameObject basicRobotPrefab;
     /* Bonus Robots */
     public GameObject bonusRobotPrefab;
-    public float bonusRobotSpawnRate;
+    public int bonusRobotSpawnRate;
     /* Time Slow Robots */
     public GameObject timeslowRobotPrefab;
-    public float timeslowRobotSpawnRate;
-
-    private void Start()
-    {
-        StartCoroutine(SpawnSpecialRobots(bonusRobotSpawnRate, bonusRobotPrefab));
-        StartCoroutine(SpawnSpecialRobots(timeslowRobotSpawnRate, timeslowRobotPrefab));
-    }
+    public int timeslowRobotSpawnRate;
 
     void Update()
     {
@@ -29,23 +23,27 @@ public class SpawnRobots : MonoBehaviour
     }
 
     #region RobotCreation
-    private IEnumerator SpawnSpecialRobots(float spawnRate, GameObject robotPrefab)
+    public void ScoreUpdated(int actualScore)
+    {
+        if (actualScore % bonusRobotSpawnRate == 0) // If actual score is a multiplier of 'bonusSpawnRate'
+            SpawnSpecialRobots(bonusRobotPrefab);
+        if (actualScore % timeslowRobotSpawnRate == 0) // If actual score is a multiplier of 'timeslowSpawnRate'
+            SpawnSpecialRobots(timeslowRobotPrefab);
+    }
+
+    private void SpawnSpecialRobots(GameObject robotPrefab)
     {
         float xSpawn;
         float ySpawn;
         RobotAI.AIRobot ai;
 
-        while (gameObject != null)
-        {
-            yield return new WaitForSeconds(spawnRate);
-            ySpawn = GenerateYSpawn();
-            if (Random.Range(0, 2) == 0)
-                ai = RobotAI.AIRobot.MOVE_LEFT;
-            else
-                ai = RobotAI.AIRobot.MOVE_RIGHT;
-            xSpawn = GenerateXSpawnMoving(ai, ySpawn, robotPrefab, false);
-            CreateRobot(xSpawn, ySpawn, ai, robotPrefab);
-        }
+        ySpawn = GenerateYSpawn();
+        if (Random.Range(0, 2) == 0)
+            ai = RobotAI.AIRobot.MOVE_LEFT;
+        else
+            ai = RobotAI.AIRobot.MOVE_RIGHT;
+        xSpawn = GenerateXSpawnMoving(ai, ySpawn, robotPrefab, false);
+        CreateRobot(xSpawn, ySpawn, ai, robotPrefab);
     }
 
     private void SpawnBasicRobot(int rand)

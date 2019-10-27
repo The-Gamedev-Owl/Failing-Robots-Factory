@@ -4,34 +4,68 @@ using UnityEngine;
 
 public class BonusRobot : ARobot
 {
+    private bool hasBeenOnScreen;
+    private Animator animator;
+    private SpriteRenderer spriteRenderer;
+    private BoxCollider2D boxCollider;
+
     // Overrides
     private void Start()
     {
+        isDying = false;
+        hasBeenOnScreen = false;
+        animator = GetComponent<Animator>();
         gameParameters = FindObjectOfType<GameParameters>();
-        RotateDependingOnDirection();
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        boxCollider = GetComponent<BoxCollider2D>();
+        StartMovingAnimation();
     }
 
     // Overrides
     private void FixedUpdate()
     {
-        moveSpeed = gameParameters.GetMoveSpeed() * 1.5f;
+        if (!isDying)
+        {
+            CheckInSight();
+            moveSpeed = gameParameters.GetMoveSpeed() * 1.5f;
+        }
         Move();
     }
 
-    private void RotateDependingOnDirection()
+    private void CheckInSight()
     {
-        Vector3 newRotation = transform.eulerAngles;
+        if (!hasBeenOnScreen && spriteRenderer.isVisible)
+            hasBeenOnScreen = true;
+        Vector2 screenPosition = Camera.main.WorldToScreenPoint(transform.position);
+        if (hasBeenOnScreen && (screenPosition.x < (-Screen.width + 300) || screenPosition.x > (Screen.width + 300)))
+            Destroy(gameObject);
+    }
 
+    private void StartMovingAnimation()
+    {
         if (ai == RobotAI.AIRobot.MOVE_LEFT)
-            newRotation.z = 90f;
+            animator.SetBool("MoveLeft", true);
         else if (ai == RobotAI.AIRobot.MOVE_RIGHT)
-            newRotation.z = 270f;
-        transform.eulerAngles = newRotation;
+            animator.SetBool("MoveRight", true);
     }
 
     public override void DieAbility()
     {
-        ManageScore.actualScore += 20;
+        ManageScore.AddScore(20);
+        DeathAnimation();
+    }
+
+    protected override void DeathAnimation()
+    {
+        isDying = true;
+        moveSpeed /= 3; // Looks like the robot falls along. Not stopping right on touch
+        boxCollider.enabled = false;
+        spriteRenderer.enabled = false;
+        UnshowParts();
+        if (ai == RobotAI.AIRobot.MOVE_LEFT)
+            animator.SetTrigger("DeathLeft");
+        else if (ai == RobotAI.AIRobot.MOVE_RIGHT)
+            animator.SetTrigger("DeathRight");
     }
 }
 

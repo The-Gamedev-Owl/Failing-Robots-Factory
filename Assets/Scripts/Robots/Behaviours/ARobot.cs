@@ -5,28 +5,11 @@ using UnityEngine;
 abstract public class ARobot : MonoBehaviour
 {
     public RobotAI.AIRobot ai;
+    public GameObject deathSprites;
 
-    protected GameParameters gameParameters;
+    protected bool isDying;
     protected float moveSpeed;
-
-    #region MonoBehaviourMethods
-    private void Start()
-    {
-        gameParameters = FindObjectOfType<GameParameters>();
-    }
-
-    private void FixedUpdate()
-    {
-        moveSpeed = gameParameters.GetMoveSpeed();
-        Move();
-    }
-
-    private void OnBecameInvisible()
-    {
-        Destroy(gameObject);
-    }
-
-    #endregion MonoBehaviourMethods
+    protected GameParameters gameParameters;
 
     protected void Move()
     {
@@ -38,4 +21,22 @@ abstract public class ARobot : MonoBehaviour
     }
 
     abstract public void DieAbility();
+    abstract protected void DeathAnimation();
+
+    /* Will randomly deactivate some part from robots. This way, death animation will not always be exactly the same */
+    protected void UnshowParts()
+    {
+        int minimumShown = deathSprites.transform.childCount / 3;
+        int random = Random.Range(minimumShown, deathSprites.transform.childCount);
+
+        deathSprites.SetActive(true);
+        for (int i = 0; i < random; i++)
+            deathSprites.transform.GetChild(Random.Range(i, random)).gameObject.SetActive(false);
+        deathSprites.transform.Find("Explosion").gameObject.SetActive(true);
+    }
+
+    public void SelfDestruct()
+    {
+        Destroy(gameObject);
+    }
 }
