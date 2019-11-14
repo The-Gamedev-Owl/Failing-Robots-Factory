@@ -20,6 +20,32 @@ public class DestroyEnemies : MonoBehaviour
     {
         if (Input.touchCount > 0)
             KillRobotOnTouch();
+#if UNITY_EDITOR
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit2D hit;
+            Vector3 touchedPosition;
+
+            if (!hasLost)
+            {
+                hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
+                if (hit.transform != null)
+                {
+                    playerSight.ResetFade();
+                    hit.transform.gameObject.GetComponent<ARobot>().DieAbility();
+                }
+                else
+                {
+                    hasLost = true;
+                    playerSight.StopFade();
+                    touchedPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                    touchedPosition.z = 0f;
+                    Instantiate(errorPrefab, touchedPosition, new Quaternion(0f, 0f, 0f, 0f));
+                    StartCoroutine(CameraZoomInLoose(touchedPosition));
+                }
+            }
+        }
+#endif 
     }
 
     private void KillRobotOnTouch()
