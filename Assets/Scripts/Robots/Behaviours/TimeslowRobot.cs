@@ -30,7 +30,10 @@ public class TimeslowRobot : ARobot
         {
             CheckInSight();
             moveSpeed = gameParameters.GetMoveSpeed() * 1.5f;
+            animator.speed = gameParameters.GetAnimatorSpeed();
         }
+        else
+            animator.speed = 1;
         Move();
     }
 

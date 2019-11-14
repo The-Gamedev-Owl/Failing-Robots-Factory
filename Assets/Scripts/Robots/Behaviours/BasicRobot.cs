@@ -24,7 +24,12 @@ public class BasicRobot : ARobot
     private void FixedUpdate()
     {
         if (!isDying)
+        {
             moveSpeed = gameParameters.GetMoveSpeed();
+            animator.speed = gameParameters.GetAnimatorSpeed();
+        }
+        else
+            animator.speed = 1;
         if (ai != RobotAI.AIRobot.STILL)
         {
             CheckInSight();
