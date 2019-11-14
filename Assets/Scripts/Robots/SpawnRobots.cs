@@ -14,21 +14,30 @@ public class SpawnRobots : MonoBehaviour
     public GameObject timeslowRobotPrefab;
     public int timeslowRobotSpawnRate;
 
+    private int stackedScoreSpecialRobots;
+
+    private void Start()
+    {
+        stackedScoreSpecialRobots = 0;
+    }
+
     void Update()
     {
        if (gameObject.transform.childCount < maxRobots)
-       {
             SpawnBasicRobot(Random.Range(0, 100));
-       }
     }
 
     #region RobotCreation
-    public void ScoreUpdated(int actualScore)
+    public void ScoreUpdated(int actualScore, int toAdd)
     {
-        if (actualScore % bonusRobotSpawnRate == 0) // If actual score is a multiplier of 'bonusSpawnRate'
+        stackedScoreSpecialRobots += toAdd;
+        if (stackedScoreSpecialRobots == bonusRobotSpawnRate) // If actual score is equal to 'bonusSpawnRate'
             SpawnSpecialRobots(bonusRobotPrefab);
-        if (actualScore % timeslowRobotSpawnRate == 0) // If actual score is a multiplier of 'timeslowSpawnRate'
+        if (stackedScoreSpecialRobots >= timeslowRobotSpawnRate) // If actual score is equal or greater than 'timeslowSpawnRate'
+        {
             SpawnSpecialRobots(timeslowRobotPrefab);
+            stackedScoreSpecialRobots = 0;
+        }
     }
 
     private void SpawnSpecialRobots(GameObject robotPrefab)

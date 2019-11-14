@@ -24,7 +24,7 @@ public class ManageScore : MonoBehaviour
     static public void AddScore(int toAdd)
     {
         actualScore += toAdd;
-        spawner.ScoreUpdated(actualScore);
+        spawner.ScoreUpdated(actualScore, toAdd);
         gameParameters.ScoreUpdated(toAdd);
     }
 }

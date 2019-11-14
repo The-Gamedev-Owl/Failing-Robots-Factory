@@ -498,7 +498,7 @@ MonoBehaviour:
   bonusRobotSpawnRate: 50
   timeslowRobotPrefab: {fileID: 5031871502201813396, guid: d5bcb9d6b2654b0409a26bacadf4e14d,
     type: 3}
-  timeslowRobotSpawnRate: 87
+  timeslowRobotSpawnRate: 80
 --- !u!114 &659169991
 MonoBehaviour:
   m_ObjectHideFlags: 0
