@@ -31,11 +31,21 @@ public class GameParameters : MonoBehaviour
         }
     }
 
+    #region AnimatorSpeed
+    public float GetAnimatorSpeed()
+    {
+        return moveSpeed / initialSpeed;
+    }
+    #endregion AnimatorSpeed
+
+    #region MoveSpeed
     public float GetMoveSpeed()
     {
         return moveSpeed;
     }
+    #endregion MoveSpeed
 
+    #region SpeedModifiers
     public void ChangeSpeed(float newSpeed)
     {
         moveSpeed = newSpeed;
@@ -51,4 +61,5 @@ public class GameParameters : MonoBehaviour
         yield return new WaitForSeconds(waitTime);
         moveSpeed = initialSpeed;
     }
+    #endregion SpeedModifiers
 }
