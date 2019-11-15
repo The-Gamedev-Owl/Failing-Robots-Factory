@@ -491,6 +491,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxRobots: 3
+  innocentPrefab: {fileID: 1150270725879262000, guid: 2e7fe051c0808c24da46489ab2545328,
+    type: 3}
+  innocentSpawnRate: 10
   basicRobotPrefab: {fileID: 1684956755711734513, guid: 5624d12e0daf74e4db6976a996eec6eb,
     type: 3}
   bonusRobotPrefab: {fileID: 2488937067837162281, guid: 75558cc95e654a24791478d71173a92d,

@@ -5,6 +5,9 @@ using UnityEngine;
 public class SpawnRobots : MonoBehaviour
 {
     public int maxRobots;
+    /* Innocent Robots */
+    public GameObject innocentPrefab;
+    public int innocentSpawnRate;
     /* Basic Robots */
     public GameObject basicRobotPrefab;
     /* Bonus Robots */
@@ -14,10 +17,12 @@ public class SpawnRobots : MonoBehaviour
     public GameObject timeslowRobotPrefab;
     public int timeslowRobotSpawnRate;
 
+    private int stackedScoreInnocentRobots;
     private int stackedScoreSpecialRobots;
 
     private void Start()
     {
+        stackedScoreInnocentRobots = 0;
         stackedScoreSpecialRobots = 0;
     }
 
@@ -27,8 +32,24 @@ public class SpawnRobots : MonoBehaviour
             SpawnBasicRobot(Random.Range(0, 100));
     }
 
-    #region RobotCreation
-    public void ScoreUpdated(int actualScore, int toAdd)
+    #region ScoreStacking
+    public void ScoreUpdated(int toAdd)
+    {
+        StackInnocentScore(toAdd);
+        StackBonusRobotsScore(toAdd);
+    }
+
+    private void StackInnocentScore(int toAdd)
+    {
+        stackedScoreInnocentRobots += toAdd;
+        if (stackedScoreInnocentRobots >= innocentSpawnRate)
+        {
+            stackedScoreInnocentRobots -= innocentSpawnRate;
+            SpawnInnocentRobot();
+        }
+    }
+
+    private void StackBonusRobotsScore(int toAdd)
     {
         stackedScoreSpecialRobots += toAdd;
         if (stackedScoreSpecialRobots == bonusRobotSpawnRate) // If actual score is equal to 'bonusSpawnRate'
@@ -39,7 +60,9 @@ public class SpawnRobots : MonoBehaviour
             stackedScoreSpecialRobots = 0;
         }
     }
+    #endregion ScoreStacking
 
+    #region RobotCreation
     private void SpawnSpecialRobots(GameObject robotPrefab)
     {
         float xSpawn;
@@ -52,7 +75,16 @@ public class SpawnRobots : MonoBehaviour
         else
             ai = RobotAI.AIRobot.MOVE_RIGHT;
         xSpawn = GenerateXSpawnMoving(ai, ySpawn, robotPrefab, false);
-        CreateRobot(xSpawn, ySpawn, ai, robotPrefab);
+        CreateRobot(xSpawn, ySpawn, ai, robotPrefab, true);
+    }
+
+    private void SpawnInnocentRobot()
+    {
+        float ySpawn = GenerateYSpawn();
+        float xSpawn = GenerateXSpawnStill(ySpawn);
+
+        if (!float.IsNaN(xSpawn))
+            CreateRobot(xSpawn, ySpawn, RobotAI.AIRobot.STILL, innocentPrefab, false);
     }
 
     private void SpawnBasicRobot(int rand)
@@ -69,23 +101,24 @@ public class SpawnRobots : MonoBehaviour
                 movementType = RobotAI.AIRobot.MOVE_RIGHT;
             xSpawn = GenerateXSpawnMoving(movementType, ySpawn, basicRobotPrefab);
             if (!float.IsNaN(xSpawn))
-                CreateRobot(xSpawn, ySpawn, movementType, basicRobotPrefab);
+                CreateRobot(xSpawn, ySpawn, movementType, basicRobotPrefab, true);
         }
         else
         {
             xSpawn = GenerateXSpawnStill(ySpawn);
             if (!float.IsNaN(xSpawn))
-                CreateRobot(xSpawn, ySpawn, RobotAI.AIRobot.STILL, basicRobotPrefab);
+                CreateRobot(xSpawn, ySpawn, RobotAI.AIRobot.STILL, basicRobotPrefab, true);
         }
     }
 
-    public void CreateRobot(float xSpawn, float ySpawn, RobotAI.AIRobot ai, GameObject robotPrefab)
+    public void CreateRobot(float xSpawn, float ySpawn, RobotAI.AIRobot ai, GameObject robotPrefab, bool setParent)
     {
         GameObject newGo = Instantiate(robotPrefab) as GameObject;
         ARobot newRobot = newGo.GetComponent<ARobot>();
 
         newRobot.transform.position = new Vector3(xSpawn, ySpawn, newRobot.transform.position.z);
-        newRobot.transform.parent = transform;
+        if (setParent)
+            newRobot.transform.parent = transform;
         newRobot.ai = ai;
     }
     #endregion RobotCreation

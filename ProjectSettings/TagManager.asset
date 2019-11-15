@@ -50,3 +50,6 @@ TagManager:
   - name: Foreground
     uniqueID: 622219565
     locked: 0
+  - name: Innocents
+    uniqueID: 3599563257
+    locked: 0
