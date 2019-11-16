@@ -24,6 +24,11 @@ public class Menu : MonoBehaviour
         StartCoroutine(PassAnimation());
     }
 
+    public void ShowHighScore()
+    {
+        animator.SetTrigger("HighScore");
+    }
+
     private IEnumerator PassAnimation()
     {
         yield return new WaitForSeconds(1f);

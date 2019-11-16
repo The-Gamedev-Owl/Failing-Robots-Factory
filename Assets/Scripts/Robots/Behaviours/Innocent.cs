@@ -30,6 +30,7 @@ public class Innocent : ARobot
 
     public override void DieAbility()
     {
+        PlayerPrefs.SetInt("InnocentsKilled", PlayerPrefs.GetInt("InnocentsKilled", 0) + 1);
         DeathAnimation();
     }
 
