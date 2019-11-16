@@ -55,6 +55,7 @@ public class BonusRobot : ARobot
     public override void DieAbility()
     {
         ManageScore.AddScore(20);
+        PlayerPrefs.SetInt("BonusesKilled", PlayerPrefs.GetInt("BonusesKilled", 0) + 1);
         DeathAnimation();
     }
 

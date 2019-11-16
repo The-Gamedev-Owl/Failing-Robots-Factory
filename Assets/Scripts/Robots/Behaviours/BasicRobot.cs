@@ -50,6 +50,7 @@ public class BasicRobot : ARobot
     public override void DieAbility()
     {
         ManageScore.AddScore(1);
+        PlayerPrefs.SetInt("BasicsKilled", PlayerPrefs.GetInt("BasicsKilled", 0) + 1);
         DeathAnimation();
     }
 

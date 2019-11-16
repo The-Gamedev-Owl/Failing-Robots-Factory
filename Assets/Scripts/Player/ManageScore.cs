@@ -11,6 +11,7 @@ public class ManageScore : MonoBehaviour
 
     private void Start()
     {
+        PlayerPrefs.SetInt("GamesPlayed", PlayerPrefs.GetInt("GamesPlayed", 0) + 1);
         actualScore = 0;
         spawner = GetComponent<SpawnRobots>();
         gameParameters = FindObjectOfType<GameParameters>();
