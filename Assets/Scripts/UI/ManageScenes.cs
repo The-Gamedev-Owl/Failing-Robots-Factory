@@ -7,7 +7,7 @@ public class ManageScenes : MonoBehaviour
 {
     public void ChangeScene(string newSceneName)
     {
-        SceneManager.LoadScene(newSceneName, LoadSceneMode.Single);
+        SceneManager.LoadSceneAsync(newSceneName, LoadSceneMode.Single);
     }
 
     public void QuitApplication()
