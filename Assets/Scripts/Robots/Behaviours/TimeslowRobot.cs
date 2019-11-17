@@ -10,6 +10,7 @@ public class TimeslowRobot : ARobot
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private CircleCollider2D circleCollider;
+    private AudioSource audioSource;
 
     // Overrides
     private void Start()
@@ -20,6 +21,7 @@ public class TimeslowRobot : ARobot
         animator = GetComponent<Animator>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         circleCollider = GetComponent<CircleCollider2D>();
+        audioSource = GetComponent<AudioSource>();
         AnimationSpeedDependingOnDirection();
     }
 
@@ -57,6 +59,7 @@ public class TimeslowRobot : ARobot
     public override void DieAbility()
     {
         ManageScore.AddScore(1);
+        audioSource.Play();
         PlayerPrefs.SetInt("TimeslowsKilled", PlayerPrefs.GetInt("TimeslowsKilled", 0) + 1);
         gameParameters.ChangeSpeed(gameParameters.GetMoveSpeed() / 3);
         gameParameters.ResetSpeed(slowTimeDuration); // Changes speed back to normal afer 'slowTimeDuration'

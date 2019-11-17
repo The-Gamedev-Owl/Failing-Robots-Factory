@@ -6,14 +6,17 @@ using UnityEngine.SceneManagement;
 public class DestroyEnemies : MonoBehaviour
 {
     public GameObject errorPrefab;
+    public StopMusic ambianceMusic;
 
     private bool hasLost;
     private Sight playerSight;
+    private AudioSource gameOverSoundSource;
 
     private void Start()
     {
         hasLost = false;
         playerSight = GetComponent<Sight>();
+        gameOverSoundSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -72,6 +75,8 @@ public class DestroyEnemies : MonoBehaviour
 
         hasLost = true;
         playerSight.StopFade();
+        ambianceMusic.StopAmbianceMusic();
+        gameOverSoundSource.Play();
         touchedPosition = Camera.main.ScreenToWorldPoint(worldTouchedPosition);
         touchedPosition.z = 0f;
         if (instantiateError)
