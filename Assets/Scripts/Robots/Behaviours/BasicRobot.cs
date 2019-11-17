@@ -8,6 +8,7 @@ public class BasicRobot : ARobot
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
+    private AudioSource audioSource;
 
     // Overrides "Start" MonoBehaviour method from ARobot
     private void Start()
@@ -18,6 +19,7 @@ public class BasicRobot : ARobot
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
         gameParameters = FindObjectOfType<GameParameters>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Overrides
@@ -50,6 +52,7 @@ public class BasicRobot : ARobot
     public override void DieAbility()
     {
         ManageScore.AddScore(1);
+        audioSource.Play();
         PlayerPrefs.SetInt("BasicsKilled", PlayerPrefs.GetInt("BasicsKilled", 0) + 1);
         DeathAnimation();
     }
