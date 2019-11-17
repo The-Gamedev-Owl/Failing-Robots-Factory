@@ -8,6 +8,7 @@ public class BonusRobot : ARobot
     private Animator animator;
     private SpriteRenderer spriteRenderer;
     private BoxCollider2D boxCollider;
+    private AudioSource audioSource;
 
     // Overrides
     private void Start()
@@ -18,6 +19,7 @@ public class BonusRobot : ARobot
         gameParameters = FindObjectOfType<GameParameters>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         boxCollider = GetComponent<BoxCollider2D>();
+        audioSource = GetComponent<AudioSource>();
         StartMovingAnimation();
     }
 
@@ -28,7 +30,10 @@ public class BonusRobot : ARobot
         {
             CheckInSight();
             moveSpeed = gameParameters.GetMoveSpeed() * 1.5f;
+            animator.speed = gameParameters.GetAnimatorSpeed();
         }
+        else
+            animator.speed = 1;
         Move();
     }
 
@@ -52,6 +57,8 @@ public class BonusRobot : ARobot
     public override void DieAbility()
     {
         ManageScore.AddScore(20);
+        audioSource.Play();
+        PlayerPrefs.SetInt("BonusesKilled", PlayerPrefs.GetInt("BonusesKilled", 0) + 1);
         DeathAnimation();
     }
 
