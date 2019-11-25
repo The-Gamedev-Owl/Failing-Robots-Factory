@@ -1,5 +1,7 @@
 # Failing-Robots-Factory
 
+### A personnal project developped by one person in 2 months in South Korea (October-November 2019)
+
 ### A mobile game with quick gameplay where you have to stop a robot uprising !
 
 ### If you want to play the game on Android, you can check it out here : https://sykkoss.itch.io/failing-robots-factory
